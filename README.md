@@ -6,7 +6,7 @@ Brainfuck interpreter with functions written in Rust.
 
 **Run** with `cargo run [filename(s)]`, where the optional files are scripts containing Brainfuck code.
 
-After the files are compiled and executed, you will be presented with an inline interpreter where you can continue inserting code, load more files, save the code you write in new files. Some script examples are found in `helloworld.bf`, `loadtest.bf` and `funtest`.
+After the files are compiled and executed, you will be presented with an inline interpreter where you can continue inserting code, load more files, save the code you write in new files. Some script examples are found in `hello_world`, `loadtest` and `funtest`. They have to be run in this order.
 
 ## Base Language and New Syntax
 The standard operators can be foud at [Wikipedia](https://en.wikipedia.org/wiki/Brainfuck)
