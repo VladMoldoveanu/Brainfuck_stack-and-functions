@@ -1,0 +1,7 @@
+[package]
+name = "Brainfuck"
+version = "0.1.0"
+authors = ["superstar1998 <vlad.mihai28@yahoo.com>"]
+
+[dependencies]
+lazy_static = "1.0"

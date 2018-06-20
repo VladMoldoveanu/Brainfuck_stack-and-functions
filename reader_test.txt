@@ -1,0 +1,5 @@
+Test that the reader works with opening files and extracting
+useful characters such as [],...! from
+<><><<<>__++_++++ any place       //||||\\\
+
+and combination ~~~~~~~
