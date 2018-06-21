@@ -34,7 +34,7 @@ Using `!!` in a function inserts the number that the function will get after com
 
 At the end of a function called on a new array, the number at the last position of the `pointer` in that array is moved to the position from where the function was called in the old array. The new array is discarded.
 
-Examples can be found in the files provided. To run those files, the compile order is: `hello_world`.
+Examples can be found in the files provided. To run those files, the compile order is: `hello_world`, `loadtest`, `funtest`.
 
 ## Interpreter Features
 **Compiling:** the scripts are parsed, functions are created and the operations are stored in a queue waiting to execute. Files which fail to compile don't make any changes to the existing array or number of functions.
