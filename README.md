@@ -9,7 +9,7 @@ Brainfuck interpreter with functions written in Rust.
 After the files are compiled and executed, you will be presented with an inline interpreter where you can continue inserting code, load more files, save the code you write in new files. Some script examples are found in `hello_world`, `loadtest` and `funtest`. They have to be run in this order.
 
 ## Base Language and New Syntax
-The standard operators can be foud at [Wikipedia](https://en.wikipedia.org/wiki/Brainfuck)
+The standard operators can be found at [Wikipedia](https://en.wikipedia.org/wiki/Brainfuck).
 
 **Debugging** information:
 * `#`  : prints the non-zero values in the array, the position of the `pointer` and the number of functions defined
@@ -46,11 +46,21 @@ Examples can be found in the files provided. To run those files, the compile ord
 **Features:** all arrays are infinite-dimensional and support negative points. The number of functions is uncapped. 
 
 **Performance improvement:** 
-* Multiple operations of the same kind are compiled together into a single operation. For example `+++++>>>---` is stored as `add 5`, `move right 3`, `subs 3`. Loops and function calls are not stored together: `++++[-->>]` compiles to `add 4`, `loop(subs 2, move right 2)`.
-* TODO: add more.
+* Multiple operations of the same kind are compiled together into a single operation. For example `+++++>>>---` is stored as `Add(5)`, `Move(3)`, `Add(-3)`. Loops and function calls are not stored together: `++++[-->>]` compiles to `Add(4)`, `While[Add(-2), Move(2)]`.
+* Similar operations one after another are combined:
+
+Script | Compiled | Optimised
+:---:|:---:|:---:
+`+++--`|`[Add(3), Add(-2)]`|`[Add(1)]`
+`++--`|`[Add(2), Add(-2)]`|`[]`
+`>><<<`|`[Move(2), Move(-3)]`|`[Move(-1)]`
+`++!!--`|`[Add(2), Set(x*), Add(-2)]`|`[Set(x-2)]`
+`!!++!!`|`[Set(x*), Add(2), Set(x*)]`|`[Set(x)]`
+
+*The value of `x` is determined at compile-time, and thus a `Set` operation is used.
 
 ## Command Line Interpreter
-The command line interpreter will continue to ask for input untill all functions/loops are closed.
+The command line interpreter will continue to ask for input until all functions/loops are closed.
 Input can contain all types of characters which will be ignored later.
 
 Special commands have to be alone on a line:
