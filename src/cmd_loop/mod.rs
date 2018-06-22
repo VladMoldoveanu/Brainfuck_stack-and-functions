@@ -24,9 +24,8 @@ pub fn run(cmp: &mut Compiler) {
     :s [filename] => toggle saving to file\n\
     type expressions to evaluate\n";
     let err_str = "Command not understood, type :h for help\n";
-    let mut cmd = String::new();
     loop {
-        cmd = String::new();
+        let mut cmd = String::new();
         stdin().read_line(&mut cmd).expect("Failed to read from stdin.");
         let mut chs = CmdChars::new(cmd.clone());
         match chs.peek() {

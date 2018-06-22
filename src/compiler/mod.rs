@@ -1,4 +1,4 @@
-use dispatcher::Dispatcher;
+use dispatcher::dispatch;
 use dispatcher::Dispatcher::{Op, Empty, Fun, Error};
 use dispatcher::operation::base_operation::Operation;
 use dispatcher::operation::array_handler::ArrayHandler;
@@ -6,6 +6,7 @@ use dispatcher::operation::function::FunctionHolder;
 use std::collections::VecDeque;
 use reader::Reader;
 use std::time::SystemTime;
+use optimiser::optimise_code;
 
 enum CompileError {
     Ok,
@@ -33,7 +34,7 @@ impl Compiler {
         let now = SystemTime::now();
         let mut reader = Reader::from_file(fname.clone());
         let res = loop {
-            match Dispatcher::dispatch(&mut reader, &mut self.fh) {
+            match dispatch(&mut reader, &mut self.fh) {
                 Op(op) => self.temp.push_back(op),
                 Fun => {}
                 Empty => break CompileError::Ok,
@@ -43,6 +44,9 @@ impl Compiler {
         match res {
             CompileError::Ok => {
                 self.fh.push_funs();
+                //println!("Before optimisation: {:?}", self.temp);
+                self.temp = optimise_code(self.temp.clone());
+                //println!("Optimised operations: {:?}", self.temp);
                 while !self.temp.is_empty() {
                     self.ops.push_back(self.temp.pop_front().unwrap());
                 }
@@ -66,7 +70,7 @@ impl Compiler {
     pub fn compile_string(&mut self, s: String) {
         let mut reader = Reader::from_string(s);
         let res = loop {
-            match Dispatcher::dispatch(&mut reader, &mut self.fh) {
+            match dispatch(&mut reader, &mut self.fh) {
                 Op(op) => self.temp.push_back(op),
                 Fun => {}   
                 Empty => break CompileError::Ok,
@@ -76,6 +80,9 @@ impl Compiler {
         match res {
             CompileError::Ok => {
                 self.fh.push_funs();
+                //println!("Before optimisation: {:?}", self.temp);
+                self.temp = optimise_code(self.temp.clone());
+                //println!("Optimised operations: {:?}", self.temp);
                 while !self.temp.is_empty() {
                     self.ops.push_back(self.temp.pop_front().unwrap());
                 }

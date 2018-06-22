@@ -27,15 +27,17 @@ impl ArrayHandler {
     pub fn add(&mut self, i: i32) {
         self.arr[self.pos] += i;
     }
+    pub fn add_at(&mut self, pos: i32, val: i32) {
+        self.holds(pos);
+        let pos = if pos < 0 {
+            self.pos - (-pos) as usize
+        } else {
+            self.pos + pos as usize
+        };
+        self.arr[pos] += val;
+    }
     pub fn move_r(&mut self, i: i32) {
-        while i + (self.pos as i32) >= (self.arr.capacity() as i32) {
-            self.resize_right();
-        }
-        let mut poss = self.pos as i32;
-        while i + poss < 0 {
-            self.resize_left();
-            poss = self.pos as i32;
-        }
+        self.holds(i);
         if i < 0 {
             self.pos -= (-i) as usize;
         } else {
@@ -59,6 +61,16 @@ impl ArrayHandler {
         self.pos += n;
         self.displacement += n;
         self.arr = aux;
+    }
+    fn holds(&mut self, offset: i32) {
+        while offset + (self.pos as i32) >= (self.arr.capacity() as i32) {
+            self.resize_right();
+        }
+        let mut poss = self.pos as i32;
+        while offset + poss < 0 {
+            self.resize_left();
+            poss = self.pos as i32;
+        }
     }
     pub fn get(&self) -> i32 {
         self.arr[self.pos]
