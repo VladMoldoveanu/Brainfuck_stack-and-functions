@@ -27,7 +27,7 @@ Operator | Use
 
 Functions cannot be declared in loops. Functions can call other functions.
 
-For each '\\' after a '/' a number from the original array is copied to the new one.
+For each `\\` after a `/` a number from the original array is copied to the new one.
 
 `!` allows easy access to the last functions.
 Using `!!` in a function inserts the number that the function will get after compiling.
@@ -72,6 +72,7 @@ Script | Compiled | Optimised
 `[->++<]`|You get the idea|`AddTo[(1,2)]`
 `[->+>--<<]`|_____________|`AddTo[(1,1),(2,-2)]`
 `[->+<-<+>+]`|_____________|`AddTo[(1,1), (-1, 1)]`
+
 *Basically, `AddTo` has a list of offsets and how many times it has to add the value at the source to it. The complexity is linear in the length of the list.
 
 Current running time of the Fractal Viewer (`test_file`): 10.5s.
