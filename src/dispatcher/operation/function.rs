@@ -14,7 +14,7 @@ impl Function {
     }
     pub fn execute_separate(&self, ah: &mut ArrayHandler, args: usize, fh: &FunctionHolder) {
         let mut ah2 = ArrayHandler::new((args + 1) * 2, false);
-        ah2.set(ah.get());
+        ah2.set_more(ah, args);
         for op in (&self.ops).iter() {
             op.execute(&mut ah2, fh);
         }

@@ -47,7 +47,13 @@ impl ArrayHandler {
     pub fn set(&mut self, i: i32) {
         self.arr[self.pos] = i;
     }
-
+    pub fn set_more(&mut self, ah: &mut ArrayHandler, args: usize) {
+        self.holds(args as i32);
+        ah.holds(args as i32);
+        for i in 0..(args + 1) {
+            self.arr[self.pos + i] = ah.arr[ah.pos + i];
+        }
+    }
     fn resize_right(&mut self) {
         let n = self.arr.capacity();
         let mut aux = vec![0; n*2];

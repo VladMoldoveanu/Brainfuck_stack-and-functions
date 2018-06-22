@@ -60,6 +60,8 @@ fn reduce_top(ops: &mut Vec<Operation>, op: Operation) {
 
             } else if let MoveTo(_) = ops[ops.len() - 1] {
 
+            } else if let SkipMove(_) = ops[ops.len() - 1] {
+
             } else {
                 ops.push(While(w_ops));
             }

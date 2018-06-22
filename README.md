@@ -75,7 +75,23 @@ Script | Compiled | Optimised
 
 *Basically, `AddTo` has a list of offsets and how many times it has to add the value at the source to it. The complexity is linear in the length of the list.
 
-Current running time of the Fractal Viewer (`test_file`): 10.5s.
+* Copying: while there is no pattern recognition for copying, there is an easier way to do it:
+```$xslt
+This function is very useful wen called on a separate array
+It will return in the place from where it was called from the
+first argument which is followed by a 0 or the last one if there is no argument with value 0
+~
+    >[>]>
+~
+The only disadvantage of this function is that it takes linear time in the number of arguments
+and cannot copy from the left
+Copying from the left is done by moving the value from the left to right and then copying as normal
+The huge advantage is that if you keep it as your first function it will be way easier than writing 
+the whole copying algorithm and finding a place to store the temp value 
+[-]/\\\\
+```
+
+Current running time of the Fractal Viewer (`test_file`): 10.5s. (just the standard one, does not use functions)
 ## Command Line Interpreter
 The command line interpreter will continue to ask for input until all functions/loops are closed.
 Input can contain all types of characters which will be ignored later.
