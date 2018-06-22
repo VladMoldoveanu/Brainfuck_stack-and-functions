@@ -7,6 +7,7 @@ pub enum Operation {
     Add(i32),
     Move(i32),
     MoveTo(Vec<(i32, i32)>),
+    SkipMove(i32),
     Set(i32),
     Read,
     Write,
@@ -39,12 +40,16 @@ impl Operation {
             &Operation::Debug => ah.debug(fun_holder.no_functions()),
             &Operation::MoveTo(ref places) => {
                 let val = ah.get();
+                if val == 0 {
+                    return;
+                }
                 ah.set(0);
                 for &(place, mult) in places.iter() {
                     ah.add_at(place, val*mult);
                 }
             }
             &Operation::EmptyOp => panic!("Empty operation run!"),
+            &Operation::SkipMove(i) => ah.skip_move(i),
         }
     }
 }

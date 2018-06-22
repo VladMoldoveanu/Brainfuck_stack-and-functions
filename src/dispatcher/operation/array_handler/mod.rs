@@ -92,6 +92,16 @@ impl ArrayHandler {
         println!("Pointer at {}", pt);
         println!("Number of functions: {}", funs);
     }
+    pub fn skip_move(&mut self, offset: i32) {
+        while self.arr[self.pos] != 0 {
+            self.holds(offset);
+            if offset < 0 {
+                self.pos -= (-offset) as usize;
+            } else {
+                self.pos += offset as usize;
+            }
+        }
+    }
 }
 
 #[cfg(test)]

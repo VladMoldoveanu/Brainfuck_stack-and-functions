@@ -85,6 +85,8 @@ pub fn loop_optimiser(ops: Vec<Operation>) -> Operation {
             if i == 0 {
                 return Set(0);
             }
+        } else if let Move(i) = optimised[0] {
+            return SkipMove(i);
         }
     }
     if move_and_add(&optimised) {
