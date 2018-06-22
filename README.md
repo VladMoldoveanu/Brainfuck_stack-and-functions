@@ -59,8 +59,8 @@ Special commands have to be alone on a line:
  :---:|:---:
  `:t` | Toggles the timer for execution
  `:l [filename(s)]` | Loads, compiles and executes scripts in order
- `:s [file]` | Records the next commands (except debugging) for saving to file
- `:s` | Saves the recorded commands to a file
+ `:s [file]` | Records the next commands for saving to file
+ `:s` | Saves the recorded commands to the previous file
  `:q` | Exits the program
  
  ## Standard Library
