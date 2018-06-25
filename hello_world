@@ -38,8 +38,8 @@ different results
 |
 Calling a function with a backslash will result in creating a new array
 copying the number at the pointer in it and making the function execute there
-After it finishes it returns to the initial array replacing the call
-point with the value at the last point
+After it finishes it pushes the last number pointed to in the stack and discards the new array
+returning to the call position
 /
 Calling a function with a backslash followed by a number of forward slashes
 will result in a number of elements to the right of the point equal to the number of
@@ -55,7 +55,7 @@ Exclamation mark sets at the current point the total number of functions
 for easily calling the last ones
 This will call the last function
 which will call Hello world
-!->[-]<|
+!->[-]<|[-]
 Multiple exclamation mark saves the number of functions during compile
 so putting double exclamation marks in a function gets its number
 Useful for larger files with more functions

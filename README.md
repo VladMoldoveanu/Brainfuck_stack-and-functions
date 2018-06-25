@@ -47,7 +47,7 @@ For each `\\` after a `/` a number from the original array is copied to the new 
 `!` allows easy access to the current last functions anywhere in a file.
 Using `!!` in a function inserts the number that the function will get after compiling.
 
-At the end of a function called on a new array, the number at the last position of the `pointer` in that array is moved to the position from where the function was called in the old array. The new array is discarded.
+At the end of a function called on a new array that array is discarded.
 
 Examples can be found in the files provided. To run those files, the compile order is: `hello_world`, `loadtest`, `funtest`.
 
@@ -99,23 +99,7 @@ Since the stack implementations, those operations can be replaced with easier/mo
 
 * Multiple Pop commands are executed together.
 
-* Copying: while there is no pattern recognition for copying, there is an easier way to do it:
-```$xslt
-This function is very useful wen called on a separate array
-It will return in the place from where it was called from the
-first argument which is followed by a 0 or the last one if there is no argument with value 0
-~
-    >[>]>
-~
-The only disadvantage of this function is that it takes linear time in the number of arguments
-and cannot copy from the left
-Copying from the left is done by moving the value from the left to right and then copying as normal
-The huge advantage is that if you keep it as your first function it will be way easier than writing 
-the whole copying algorithm and finding a place to store the temp value 
-[-]/\\\\
-
-Another way is to push the value to the stack and set 0 then peek/pop at the places where you want to copy.
-```
+* Copying: while there is no pattern recognition for copying, due to the functionality provided by the stack there is no need of improving it.
 
 Current running time of the Fractal Viewer (`test_file`): 10.5s. (just the standard one, does not use functions/stack)
 ## Command Line Interpreter

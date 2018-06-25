@@ -53,7 +53,7 @@ impl Operation {
                     ah.add_at(place, val*mult);
                 }
             }
-            &Operation::EmptyOp => panic!("Empty operation run!"),
+            &Operation::EmptyOp => {}
             &Operation::SkipMove(i) => ah.skip_move(i),
             &Operation::PeekStack => ah.add(STACK_HOLDER.lock().unwrap().peek()),
             &Operation::PopStack(i) => ah.add(STACK_HOLDER.lock().unwrap().pop(i)),

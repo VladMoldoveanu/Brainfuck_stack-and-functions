@@ -3,21 +3,26 @@ functions with multiple parameters and stuff like that
 Add element 1 to the right to element 2 to the right
 in position 2 to the right
 ~
->[>+<-]>
+>[>+<-]>&
 ~
-Set the scene
+Set the scene 3 2 3
 +++>++>+++<<#
 This should leave 3 0 5
+With 5 in the stack
 |#
 
 <++<#
-This should leave 0 2 5
+This should leave 3 2 5
+With 5 0 in the stack
 /#
 
-+++#
-This should leave 2 2 5
+This should leave 3 2 5
+With 5 0 and 2 in the stack
 /\#
 
-+#
-This should leave 7 2 5
+This should leave 3 2 5
+With 5 0 2 and 7 in the stack
 /\\#
+
+Clear the scene and the stack
+^^^^[-]>[-]>[-]<<

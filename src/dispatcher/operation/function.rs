@@ -18,7 +18,6 @@ impl Function {
         for op in (&self.ops).iter() {
             op.execute(&mut ah2, fh);
         }
-        ah.set(ah2.get());
     }
 }
 
