@@ -47,6 +47,9 @@ pub fn dispatch(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
         '[' => {rd.next(); return create_loop(rd, fh)}
         '~' => {rd.next(); return create_fun(rd, fh)}
         '#' => {amalgamate(rd); return Op(Debug)}
+        '@' => {amalgamate(rd); return Op(PeekStack)}
+        '&' => {rd.next(); return Op(PushStack)}
+        '^' => {rd.next(); return Op(PopStack)}
         _ => return Error(String::from("Unidentified character passed filtering")),
     }
 }

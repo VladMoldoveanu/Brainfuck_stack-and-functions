@@ -1,5 +1,6 @@
 mod input_reader;
 use self::input_reader::INPUT_READER;
+use dispatcher::operation::stack_handler::STACK_HOLDER;
 
 pub struct ArrayHandler {
     arr: Vec<i32>,
@@ -96,6 +97,7 @@ impl ArrayHandler {
         }
         let pt = (self.pos as i64) - (self.displacement as i64);
         println!("Pointer at {}", pt);
+        STACK_HOLDER.lock().unwrap().debug();
         println!("Number of functions: {}", funs);
     }
     pub fn skip_move(&mut self, offset: i32) {

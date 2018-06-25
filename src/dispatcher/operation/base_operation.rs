@@ -1,5 +1,6 @@
 use dispatcher::operation::array_handler::ArrayHandler;
 use dispatcher::operation::function::FunctionHolder;
+use dispatcher::operation::stack_handler::STACK_HOLDER;
 use optimiser::loop_optimiser;
 
 #[derive(Clone, Debug)]
@@ -16,6 +17,9 @@ pub enum Operation {
     CallFun,
     CallFSep(usize),
     Debug,
+    PeekStack,
+    PopStack,
+    PushStack,
     EmptyOp,
 }
 
@@ -50,6 +54,9 @@ impl Operation {
             }
             &Operation::EmptyOp => panic!("Empty operation run!"),
             &Operation::SkipMove(i) => ah.skip_move(i),
+            &Operation::PeekStack => ah.add(STACK_HOLDER.lock().unwrap().peek()),
+            &Operation::PopStack => ah.add(STACK_HOLDER.lock().unwrap().pop()),
+            &Operation::PushStack => STACK_HOLDER.lock().unwrap().push(ah.get()),
         }
     }
 }

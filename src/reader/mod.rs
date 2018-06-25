@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::prelude::*;
 
+#[derive(Debug)]
 pub struct Reader {
     ch: Vec<char>,
     pos: usize,
@@ -34,7 +35,7 @@ impl Reader {
 }
 
 lazy_static! {
-    static ref CHARS: Vec<char> = vec!['>', '<', '-', '+', '.', ',', '~', '!', '/', '\\', '|', '[', ']', '#'];
+    static ref CHARS: Vec<char> = vec!['>', '<', '-', '+', '.', ',', '~', '!', '/', '\\', '|', '[', ']', '#', '@', '&', '^'];
 }
 
 #[cfg(test)]

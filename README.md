@@ -1,12 +1,12 @@
-# Brainfuck_w_funs
-Brainfuck interpreter with functions written in Rust.
+# Brainfuck with stack and functions
+Optimised Brainfuck interpreter with stack and functions capabilities written in Rust.
 
 ## Using the Interpreter
 **Compile** all the files with `cargo build --release`.
 
 **Run** with `cargo run [filename(s)]`, where the optional files are scripts containing Brainfuck code.
 
-After the files are compiled and executed, you will be presented with an inline interpreter where you can continue inserting code, load more files, save the code you write in new files. Some script examples are found in `hello_world`, `loadtest` and `funtest`. They have to be run in this order.
+After the files are compiled and executed, you will be presented with an inline interpreter where you can continue inserting code, load more files, save the code you write in new files. Some script examples are found in `hello_world`, `loadtest`, `funtest` and `stack_test`.
 
 ## Base Language and New Syntax
 The standard operators can be found at [Wikipedia](https://en.wikipedia.org/wiki/Brainfuck).
@@ -14,9 +14,21 @@ The standard operators can be found at [Wikipedia](https://en.wikipedia.org/wiki
 **Debugging** information:
 * `#`  : prints the non-zero values in the array, the position of the `pointer` and the number of functions defined
 
+**Stack** information:
+
+Operator | Usage
+:---:|:---:
+`@`|Adds the number at the top of the stack to the current location
+`^`|Removes the top element and adds it to the current location
+`&`|Pushes the element at the current location into the stack
+
+Everything uses the same stack, including functions called on a separate array(see next part).
+
+Examples can be found in `stack_test`. The file has to be loaded on an empty array.
+
 Declaring and calling **functions**:
 
-Operator | Use 
+Operator | Usage 
 :--------:|:---:
 `~`|Begin/end a function
 `\|`|Call the function with the number at the `pointer`
@@ -29,7 +41,7 @@ Functions cannot be declared in loops. Functions can call other functions.
 
 For each `\\` after a `/` a number from the original array is copied to the new one.
 
-`!` allows easy access to the last functions.
+`!` allows easy access to the current last functions anywhere in a file.
 Using `!!` in a function inserts the number that the function will get after compiling.
 
 At the end of a function called on a new array, the number at the last position of the `pointer` in that array is moved to the position from where the function was called in the old array. The new array is discarded.
@@ -43,7 +55,9 @@ Examples can be found in the files provided. To run those files, the compile ord
 
 **Reading characters:** characters are sent to the program only after typing the `\n` character. The input received contains the `\n` character. 
 
-**Features:** all arrays are infinite-dimensional and support negative points. The number of functions is uncapped. 
+**Features:** all arrays are infinite-dimensional* and support negative points. The stack is infinite-dimensional*. The number of functions is uncapped*. 
+
+*Depends on the available memory.
 
 **Performance improvements:** 
 * Multiple operations of the same kind are compiled together into a single operation. For example `+++++>>>---` is stored as `Add(5)`, `Move(3)`, `Add(-3)`. Loops and function calls are not stored together: `++++[-->>]` compiles to `Add(4)`, `While[Add(-2), Move(2)]`.
@@ -75,6 +89,7 @@ Script | Compiled | Optimised
 
 *Basically, `AddTo` has a list of offsets and how many times it has to add the value at the source to it. The complexity is linear in the length of the list.
 
+Since the stack implementations, those operations can be replaced with easier/more robust code with almost the same time complexity.
 * Copying: while there is no pattern recognition for copying, there is an easier way to do it:
 ```$xslt
 This function is very useful wen called on a separate array
@@ -89,9 +104,11 @@ Copying from the left is done by moving the value from the left to right and the
 The huge advantage is that if you keep it as your first function it will be way easier than writing 
 the whole copying algorithm and finding a place to store the temp value 
 [-]/\\\\
+
+Another way is to push the value to the stack and set 0 then peek/pop at the places where you want to copy.
 ```
 
-Current running time of the Fractal Viewer (`test_file`): 10.5s. (just the standard one, does not use functions)
+Current running time of the Fractal Viewer (`test_file`): 10.5s. (just the standard one, does not use functions/stack)
 ## Command Line Interpreter
 The command line interpreter will continue to ask for input until all functions/loops are closed.
 Input can contain all types of characters which will be ignored later.
