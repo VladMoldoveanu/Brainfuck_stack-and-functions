@@ -27,6 +27,9 @@ impl StackHandler {
         println!("Stack size: {}", self.stk.len());
         println!("Stack: {:?}", self.stk);
     }
+    pub fn len(&self) -> usize {
+        self.stk.len()
+    }
 }
 
 lazy_static!{

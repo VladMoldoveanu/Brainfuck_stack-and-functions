@@ -21,6 +21,7 @@ Operator | Usage
 `@`|Adds the number at the top of the stack to the current location
 `^`|Removes the top element and adds it to the current location
 `&`|Pushes the element at the current location into the stack
+`?`|Sets the int at the current position to the length of the stack
 
 Everything uses the same stack, including functions called on a separate array(see next part).
 
@@ -74,6 +75,8 @@ Script | Compiled | Optimised
 `!!++!!`|`[Set(x*), Add(2), Set(x*)]`|`[Set(x)]`
 
 *The value of `x` is determined at compile-time, and thus a `Set` operation is used.
+
+Inserting the length of the stack is treated as a special `Set` command and treated accordingly.
 * `[+]` and `[-]` are compiled to `Set(0)`.
 * Loops that move to right or left are compiled to the same operation, but hardcoded in the compiler:
 

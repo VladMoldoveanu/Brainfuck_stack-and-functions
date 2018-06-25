@@ -20,6 +20,7 @@ pub enum Operation {
     PeekStack,
     PopStack(usize),
     PushStack,
+    StackLen,
     EmptyOp,
 }
 
@@ -57,6 +58,7 @@ impl Operation {
             &Operation::PeekStack => ah.add(STACK_HOLDER.lock().unwrap().peek()),
             &Operation::PopStack(i) => ah.add(STACK_HOLDER.lock().unwrap().pop(i)),
             &Operation::PushStack => STACK_HOLDER.lock().unwrap().push(ah.get()),
+            &Operation::StackLen => ah.set(STACK_HOLDER.lock().unwrap().len() as i32),
         }
     }
 }

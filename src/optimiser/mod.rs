@@ -44,6 +44,8 @@ fn reduce_top(ops: &mut Vec<Operation>, op: Operation) {
                 ops.pop();
             } else if let PeekStack = ops[ops.len() - 1] {
                 ops.pop();
+            } else if let StackLen = ops[ops.len() - 1] {
+                ops.pop();
             }
             ops.push(Set(i));
         }
@@ -53,6 +55,8 @@ fn reduce_top(ops: &mut Vec<Operation>, op: Operation) {
             } else if let Set(_) = ops[ops.len() - 1] {
                 ops.pop();
             } else if let PeekStack = ops[ops.len() - 1] {
+                ops.pop();
+            } else if let StackLen = ops[ops.len() - 1] {
                 ops.pop();
             }
             ops.push(Read);
@@ -77,6 +81,18 @@ fn reduce_top(ops: &mut Vec<Operation>, op: Operation) {
             } else {
                 ops.push(PopStack(i));
             }
+        }
+        StackLen => {
+            if let Add(_) = ops[ops.len() - 1] {
+                ops.pop();
+            } else if let Set(_) = ops[ops.len() - 1] {
+                ops.pop();
+            } else if let PeekStack = ops[ops.len() - 1] {
+                ops.pop();
+            } else if let StackLen = ops[ops.len() - 1] {
+                ops.pop();
+            }
+            ops.push(StackLen);
         }
         x => ops.push(x),
     }
