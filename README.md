@@ -92,6 +92,10 @@ Script | Compiled | Optimised
 *Basically, `AddTo` has a list of offsets and how many times it has to add the value at the source to it. The complexity is linear in the length of the list.
 
 Since the stack implementations, those operations can be replaced with easier/more robust code with almost the same time complexity.
+* Peek commands are ignored if followed by a Set command.
+
+* Multiple Pop commands are executed together.
+
 * Copying: while there is no pattern recognition for copying, there is an easier way to do it:
 ```$xslt
 This function is very useful wen called on a separate array
