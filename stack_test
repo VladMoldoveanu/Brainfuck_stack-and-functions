@@ -1,6 +1,6 @@
-Inserting and peeking in the stack
-+++&>@
+Inserting and peeking in the stack (also checking the optimisation)
++++&>[-]++@
 Popping from the stack
 +&>^^
-The result should be 3 4 7
+The result should be 3 6 9
 #

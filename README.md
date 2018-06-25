@@ -24,6 +24,8 @@ Operator | Usage
 
 Everything uses the same stack, including functions called on a separate array(see next part).
 
+Peeking and removing from an empty stack will result in the program crashing.
+
 Examples can be found in `stack_test`. The file has to be loaded on an empty array.
 
 Declaring and calling **functions**:

@@ -18,7 +18,7 @@ pub enum Operation {
     CallFSep(usize),
     Debug,
     PeekStack,
-    PopStack,
+    PopStack(usize),
     PushStack,
     EmptyOp,
 }
@@ -55,7 +55,7 @@ impl Operation {
             &Operation::EmptyOp => panic!("Empty operation run!"),
             &Operation::SkipMove(i) => ah.skip_move(i),
             &Operation::PeekStack => ah.add(STACK_HOLDER.lock().unwrap().peek()),
-            &Operation::PopStack => ah.add(STACK_HOLDER.lock().unwrap().pop()),
+            &Operation::PopStack(i) => ah.add(STACK_HOLDER.lock().unwrap().pop(i)),
             &Operation::PushStack => STACK_HOLDER.lock().unwrap().push(ah.get()),
         }
     }

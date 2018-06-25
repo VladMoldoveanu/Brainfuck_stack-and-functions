@@ -13,8 +13,12 @@ impl StackHandler {
     pub fn peek(&self) -> i32 {
         self.stk[self.stk.len() - 1]
     }
-    pub fn pop(&mut self) -> i32 {
-        self.stk.pop().unwrap()
+    pub fn pop(&mut self, i: usize) -> i32 {
+        let mut diff = 0;
+        for _ in 0..i {
+            diff += self.stk.pop().expect("Popping from empty stack");
+        }
+        diff
     }
     pub fn push(&mut self, el: i32) {
         self.stk.push(el);
