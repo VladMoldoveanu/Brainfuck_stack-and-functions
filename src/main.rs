@@ -1,7 +1,7 @@
 extern crate Brainfuck;
 
-use Brainfuck::compiler::Compiler;
-use Brainfuck::cmd_loop::run;
+use Brainfuck::Compiler;
+use Brainfuck::run;
 use std::collections::VecDeque;
 use std::env;
 

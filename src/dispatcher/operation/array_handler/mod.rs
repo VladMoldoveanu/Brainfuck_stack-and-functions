@@ -1,7 +1,10 @@
+//! The array on which the operations are executed
+
 mod input_reader;
 use self::input_reader::INPUT_READER;
 use dispatcher::operation::stack_handler::STACK_HOLDER;
 
+/// Resizable array with 'negative' entries
 pub struct ArrayHandler {
     arr: Vec<i32>,
     pos: usize,
@@ -9,6 +12,10 @@ pub struct ArrayHandler {
 }
 
 impl ArrayHandler {
+    /// Creates a new array with the specified size
+    ///
+    /// If `mid_array` is true, the start point is in the middle of the array,
+    /// allowing going to the left at 0 cost
     pub fn new(capacity: usize, mid_array: bool) -> ArrayHandler {
         assert!(capacity > 0);
         if mid_array {
@@ -25,9 +32,11 @@ impl ArrayHandler {
             }
         }
     }
+    /// Adds to the current position
     pub fn add(&mut self, i: i32) {
         self.arr[self.pos] += i;
     }
+    /// Adds at a position with displacement `pos`
     pub fn add_at(&mut self, pos: i32, val: i32) {
         self.holds(pos);
         let pos = if pos < 0 {
@@ -37,6 +46,7 @@ impl ArrayHandler {
         };
         self.arr[pos] += val;
     }
+    /// Moves i to the right (if i is negative it moves to the left)
     pub fn move_r(&mut self, i: i32) {
         self.holds(i);
         if i < 0 {
@@ -45,9 +55,11 @@ impl ArrayHandler {
             self.pos += i as usize;
         }
     }
+    /// Set the element at the current position to `i`
     pub fn set(&mut self, i: i32) {
         self.arr[self.pos] = i;
     }
+    /// Used for copying from the current array to `ah` `args` numbers
     pub fn set_more(&mut self, ah: &mut ArrayHandler, args: usize) {
         self.holds(args as i32);
         ah.holds(args as i32);
@@ -55,12 +67,14 @@ impl ArrayHandler {
             self.arr[self.pos + i] = ah.arr[ah.pos + i];
         }
     }
+    // Makes sure there is enough size to the right for a move
     fn resize_right(&mut self) {
         let n = self.arr.capacity();
         let mut aux = vec![0; n*2];
         aux[..n].clone_from_slice(&self.arr);
         self.arr = aux;
     }
+    // Makes sure there is enough size to the left for a move
     fn resize_left(&mut self) {
         let n = self.arr.capacity();
         let mut aux = vec![0; n*2];
@@ -69,6 +83,7 @@ impl ArrayHandler {
         self.displacement += n;
         self.arr = aux;
     }
+    // Makes sure there is enough space to move by `offset`
     fn holds(&mut self, offset: i32) {
         while offset + (self.pos as i32) >= (self.arr.capacity() as i32) {
             self.resize_right();
@@ -79,15 +94,19 @@ impl ArrayHandler {
             poss = self.pos as i32;
         }
     }
+    /// Get the value at the current position
     pub fn get(&self) -> i32 {
         self.arr[self.pos]
     }
+    /// Read from the standard input to the current position
     pub fn read(&mut self) {
         self.set(INPUT_READER.lock().unwrap().next());
     }
+    /// Write the char at the current position to the standard output
     pub fn write(&self) {
         print!("{}", (self.arr[self.pos] as u8) as char);
     }
+    /// Print debug info
     pub fn debug(&self, funs: usize) {
         for i in 0..self.arr.len() {
             if self.arr[i] != 0 {
@@ -100,6 +119,7 @@ impl ArrayHandler {
         STACK_HOLDER.lock().unwrap().debug();
         println!("Number of functions: {}", funs);
     }
+    /// Executes `SkipMove(offset)`
     pub fn skip_move(&mut self, offset: i32) {
         while self.arr[self.pos] != 0 {
             self.holds(offset);

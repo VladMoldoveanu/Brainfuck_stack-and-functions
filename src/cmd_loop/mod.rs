@@ -1,3 +1,5 @@
+//! Creates the logic for the command line interpreter.
+
 mod cmd_handler;
 use std::io::stdin;
 use std::fs::File;
@@ -5,6 +7,7 @@ use std::io::Write;
 use cmd_loop::cmd_handler::CmdChars;
 use compiler::Compiler;
 
+//The available special commands
 enum SpecialCmd {
     Time,
     File(String),
@@ -14,7 +17,9 @@ enum SpecialCmd {
     Help,
     Quit,
 }
-
+/// The main loop of the interpreter
+///
+/// Takes care of all types of commands, using the same compiler throughout the process
 pub fn run(cmp: &mut Compiler) {
     let mut timed = false;
     let mut save_file: Option<File> = None;
@@ -25,10 +30,12 @@ pub fn run(cmp: &mut Compiler) {
     type expressions to evaluate\n";
     let err_str = "Command not understood, type :h for help\n";
     loop {
+        // Read the next command
         let mut cmd = String::new();
         stdin().read_line(&mut cmd).expect("Failed to read from stdin.");
         let mut chs = CmdChars::new(cmd.clone());
         match chs.peek() {
+            //Checks if there is a special command
             Some(':') => {
                 match special_command(&mut chs) {
                     SpecialCmd::Time => timed = !timed,
@@ -81,13 +88,14 @@ pub fn run(cmp: &mut Compiler) {
         }
     }
 }
-
+//Processes a special command
 fn special_command(chs: &mut CmdChars) -> SpecialCmd {
     chs.next();
     match chs.peek() {
         Some('l') => {
             chs.next();chs.next();
             let mut files: Vec<String> = Vec::new();
+            // Reads the name of the files
             while chs.peek().is_some() && chs.peek() != Some('\n') {
                 let mut file = String::new();
                 while let Some(ch) = chs.peek() {
@@ -108,6 +116,7 @@ fn special_command(chs: &mut CmdChars) -> SpecialCmd {
                 return SpecialCmd::SaveFile;
             }
             let mut file = String::new();
+            // Reads the name of the file to save to
             while chs.peek().is_some() && chs.peek() != Some('\n') {
                 file.push(chs.peek().unwrap());
                 chs.next();
@@ -119,11 +128,14 @@ fn special_command(chs: &mut CmdChars) -> SpecialCmd {
         _ => return SpecialCmd::Error,
     }
 }
-
+//Reads a sequence of characters until al loops and functions are read
+//correctly or returns the encountered error
 fn read_sequence(chs: &mut CmdChars) -> Result<String, &str> {
     let mut cmd = String::new();
     let mut aux = String::new();
+    // Number of loops open at the current state
     let mut loops_open = 0;
+    // Whether a function is open at the current state
     let mut fun_open = false;
     while chs.peek().is_some() || loops_open > 0 || fun_open {
         if chs.peek().is_none() {

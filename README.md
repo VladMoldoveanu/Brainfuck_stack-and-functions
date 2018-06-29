@@ -77,7 +77,10 @@ Script | Compiled | Optimised
 *The value of `x` is determined at compile-time, and thus a `Set` operation is used.
 
 Inserting the length of the stack is treated as a special `Set` command and treated accordingly.
+* Empty loops are ignored (`[]` or `[<>]`).
 * `[+]` and `[-]` are compiled to `Set(0)`.
+* Loops whose operations reduce to a single Set operations are reduced to `Set(0)` (otherwise they are infinite loops -
+not expected and easier to track while debugging)
 * Loops that move to right or left are compiled to the same operation, but hardcoded in the compiler:
 
   `[>]` to `SkipMove(1)`, `[><<<]` to `SkipMove(-2)`

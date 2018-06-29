@@ -1,17 +1,25 @@
+//! Dispatcher for the operations. Main functionality is parsing a script
+//! and returning the unoptimised operations.
+
 pub mod operation;
 use reader::Reader;
-use self::operation::base_operation::{Operation, new_while};
-use self::operation::base_operation::Operation::*;
-use self::Dispatcher::*;
-use self::operation::function::FunctionHolder;
+pub use self::operation::*;
+pub use self::Dispatcher::*;
+use optimiser::loop_optimiser;
 
+///Last type of operation found
 pub enum Dispatcher{
+    ///Found a simple Operation
     Op(Operation),
+    ///Defined a function
     Fun,
+    ///Finished the script
     Empty,
+    ///Found an error in the script
     Error(String),
 }
 
+///Parses the next character (and more if necessary) and returns the corresponding operation
 pub fn dispatch(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
     if !rd.has_next() {
         return Empty;
@@ -54,6 +62,7 @@ pub fn dispatch(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
         _ => return Error(String::from("Unidentified character passed filtering")),
     }
 }
+/// Collapses multiple operations of the same kind
 fn amalgamate(rd: &mut Reader) -> i32 {
     let mut no= 0;
     let ch = rd.peek();
@@ -63,6 +72,10 @@ fn amalgamate(rd: &mut Reader) -> i32 {
     }
     no
 }
+/// Creates a loop, reads until it finds a corresponding ']'
+///
+/// # Errors
+/// Returns an error if the loop has no matching ']' or a function is declared inside.
 fn create_loop(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
     let mut ops: Vec<Operation> = vec![];
     while rd.has_next() && rd.peek() != ']' {
@@ -82,8 +95,12 @@ fn create_loop(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
         return Error(String::from("Error: loop has no end point"));
     }
     rd.next();
-    Op(new_while(ops))
+    Op(loop_optimiser(ops))
 }
+///Creates a function. Reads until it finds a matching '~'
+///
+/// # Errors
+/// Returns an error if the function has no end point
 fn create_fun(rd: &mut Reader, fh: &mut FunctionHolder) -> Dispatcher {
     let mut ops: Vec<Operation> = vec![];
     while rd.has_next() && rd.peek() != '~' {
